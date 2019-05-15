@@ -1,0 +1,26 @@
+#diagram {
+  -webkit-transform: rotateX(90deg);
+  -moz-transform: rotateX(90deg);
+  -ms-transform: rotateX(90deg);
+  -o-transform: rotateX(90deg);
+  transform: rotateX(90deg);
+  -webkit-transition-duration: 200ms;
+  -moz-transition-duration: 200ms;
+  -o-transition-duration: 200ms;
+  transition-duration: 200ms;
+  -webkit-transform-origin: center top;
+  -moz-transform-origin: center top;
+  -ms-transform-origin: center top;
+  -o-transform-origin: center top;
+  width: 600px;
+  height: 400px;
+  position: absolute;
+  left: 50%;
+  margin-left: -300px;
+  top: 0;
+  background-color: rgba(192, 220, 236, .5);
+  border-radius: 2px;
+  -webkit-box-shadow:  0 0 2px rgba(10,10,10,.8);
+  -moz-box-shadow:  0 0 2px rgba(10,10,10,.8);
+  box-shadow:  0 0 2px rgba(10,10,10,.8);
+}

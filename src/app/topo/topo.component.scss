@@ -1,0 +1,444 @@
+
+.img {
+  height: inherit;
+  width: inherit;
+  display: inline-flex;
+
+div {
+  text-align: center;
+  line-height: 60px;
+  width: 60px;
+  height: 60px;
+  background-color: #00cc00;
+  border-radius: 5px;
+  /* padding-bottom: 10px; */
+  margin: 5px;
+  position: absolute;
+  float: left;
+  z-index: 1000;
+
+i {
+  font-size: 40px;
+  color: #fff;
+}
+}
+
+img {
+  position: absolute;
+  height: inherit;
+}
+}
+
+
+.toolbox {
+  width: 160px;
+  height: 100%;
+//padding: 0 10px 0;
+  background-color: #d9d9d9;
+
+.iconBtn {
+  text-align: center;
+  line-height: 60px;
+  width: 60px;
+  height: 60px;
+  background-color: #00cc00;
+  border-radius: 5px;
+  /* padding-bottom: 10px; */
+  margin: 5px;
+
+i {
+  font-size: 40px;
+  color: #fff;
+}
+}
+}
+
+
+#contextMenu {
+  z-index: 10002;
+  position: absolute;
+  left: 5px;
+  background-color: #9d9d9d;
+  display: none;
+  box-shadow: 0 0 6px rgba(0, 0, 0, .8);
+  font-size: 12px;
+  font-family: sans-serif;
+}
+
+#contextMenu ul {
+  list-style: none;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+
+#contextMenu li a {
+  position: relative;
+  min-width: 60px;
+  color: whitesmoke;
+  display: inline-block;
+  padding: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#contextMenu li:hover {
+  background: #1890ff;
+}
+
+#contextMenu li ul li {
+  display: none;
+}
+
+#contextMenu li ul li a {
+  position: relative;
+  min-width: 60px;
+  padding: 6px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#content {
+  position: relative;
+  height: 100%;
+  width: 100%
+}
+
+#topbar {
+  width: 100%; /*必须沾满宽度防止浮动*/
+  float: left; /*必须*/
+//background-color: whitesmoke;
+  height: 60px;
+//border-bottom: 1px solid darkgray;
+  padding-left: 8px;
+  display: flex;
+  z-index: 6;
+  -webkit-transition-duration: 200ms;
+  -moz-transition-duration: 200ms;
+  -ms-transition-duration: 200ms;
+  -o-transition-duration: 200ms;
+  transition-duration: 200ms;
+}
+
+//下拉按钮
+  #droptop {
+    position: absolute;
+    -webkit-transform: rotateX(85deg);
+    -moz-transform: rotateX(85deg);
+    -ms-transform: rotateX(85deg);
+    -o-transform: rotateX(85deg);
+    transform: rotateX(85deg);
+    -webkit-transform-origin: center top;
+    -moz-transform-origin: center top;
+    -ms-transform-origin: center top;
+    -o-transform-origin: center top;
+    right: 10px;
+    width: 60px;
+    height: 60px;
+    top: 0;
+    line-height: 60px;
+    font-size: 30px;
+    text-align: center;
+    background-color: whitesmoke;
+    cursor: pointer;
+    z-index: 4;
+    border-radius: 0 0 2px 2px;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+    -webkit-transition-duration: 200ms;
+    -moz-transition-duration: 200ms;
+    -ms-transition-duration: 200ms;
+    -o-transition-duration: 200ms;
+    transition-duration: 200ms;
+
+i {
+  display: none;
+  font-size: 30px;
+}
+}
+
+//左侧展开
+  #dropleft {
+    position: absolute;
+    -webkit-transform: rotateY(85deg);
+    -moz-transform: rotateY(85deg);
+    -ms-transform: rotateY(85deg);
+    -o-transform: rotateY(85deg);
+    transform: rotateY(85deg);
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -ms-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center;
+    bottom: 0;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 30px;
+    left: 260px;
+    background-color: whitesmoke;
+    cursor: pointer;
+    -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
+    z-index: 4; //验证4可行 再画布之上，在对话框背景变暗下
+  -webkit-transition-duration: 200ms;
+    -moz-transition-duration: 200ms;
+    -ms-transition-duration: 200ms;
+    -o-transition-duration: 200ms;
+    transition-duration: 200ms;
+    border-radius: 0 2px 2px 0;
+
+i {
+  display: none;
+  font-size: 30px;
+}
+}
+
+#leftbar {
+  max-height: 100%;
+  width: 260px;
+  min-height: 100%;
+  float: left;
+  overflow-y: scroll;
+
+::-webkit-scrollbar {
+  height: 2px;
+}
+}
+
+#toolcontent {
+  position: absolute;
+  width: 100%;
+  top: 60px;
+  bottom: 0;
+}
+
+#container {
+  height: 100%;
+  width: 100%;
+}
+
+.imgGroup {
+  background-color: whitesmoke;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  border-bottom: 1px solid darkgray;
+  cursor: pointer;
+
+:hover {
+  background-color: darkgray;
+}
+}
+
+.toolitem {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+.ant-collapse-content-box {
+  padding: 0;
+}
+
+::ng-deep .vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .vertical-center-modal .ant-modal {
+  top: 0;
+}
+
+#toolTipDIV {
+  width: 200px;
+  height: 300px;
+  position: absolute;
+  background: #9d9d9d;
+  color: #fff;
+  z-index: 1000;
+  display: none;
+  opacity: 0.8;
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, .8);
+}
+
+.floatbar {
+  position: absolute;
+  z-index: 1000;
+  height: 200px;
+  width: 30px;
+  bottom: 30px;
+  right: 30px;
+}
+
+.topbtn {
+  font-size: 10px;
+  width: 50px;
+  display: block;
+  height: 60px;
+  text-align: center;
+  cursor: pointer;
+  padding-top: 8px;
+//color: #1890ff;
+i {
+  font-size: 28px;
+  color: #001529;
+}
+
+}
+
+#upcontent {
+  width: 70px;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  right: 8px;
+  height: 10%;
+  position: absolute;
+
+i {
+  font-size: 30px;
+}
+}
+
+#upcontent:hover, .topbtn:hover, #droptop:hover {
+  background-color: #1890ff;
+  color: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .8);
+  text-shadow: 0 0 4px rgba(0, 0, 0, .8);
+
+i {
+  color: #fff;
+}
+}
+
+.activebtn{
+  background-color: #1890ff;
+  color: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .8);
+  text-shadow: 0 0 4px rgba(0, 0, 0, .8);
+
+i {
+  color: #fff;
+}
+}
+
+#dropleft:hover {
+  -webkit-transform: rotateY(0deg);
+  -moz-transform: rotateY(0deg);
+  -ms-transform: rotateY(0deg);
+  -o-transform: rotateY(0deg);
+  transform: rotateY(0deg);
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -ms-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+  background-color: #1890ff;
+  color: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .8);
+  text-shadow: 0 0 2px rgba(0, 0, 0, .8);
+  -webkit-transition-duration: 200ms;
+  -moz-transition-duration: 200ms;
+  -ms-transition-duration: 200ms;
+  -o-transition-duration: 200ms;
+  transition-duration: 200ms;
+
+i {
+  display: block;
+}
+}
+
+#droptop:hover {
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+  -ms-transform: rotateX(0deg);
+  -o-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+  -webkit-transform-origin: center top;
+  -moz-transform-origin: center top;
+  -ms-transform-origin: center top;
+  -o-transform-origin: center top;
+  background-color: #1890ff;
+  color: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .8);
+  text-shadow: 0 0 2px rgba(0, 0, 0, .8);
+  -webkit-transition-duration: 200ms;
+  -moz-transition-duration: 200ms;
+  -ms-transition-duration: 200ms;
+  -o-transition-duration: 200ms;
+  transition-duration: 200ms;
+
+i {
+  display: block;
+}
+}
+
+
+.divider {
+  height: 80%;
+  top: 10%;
+//width: 2px;
+}
+
+#container {
+  height: 100%;
+  width: 100%;
+}
+
+#myDiagramDiv {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  left: 260px;
+  border: 1px solid darkgray;
+//pointer-events: none; //点穿事件，作用到下层
+//canvas{
+  //  pointer-events: none;
+  //};
+//div{
+  //  pointer-events: none;
+  //}
+}
+
+
+#map {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  left: 260px;
+}
+
+.cus {
+div {
+  height: 400px;
+  max-height: 800px;
+}
+
+display: none; //自定义分组默认都不显示
+}
+
+.echarts {
+  display: none;
+  border-radius: 2px;
+  box-shadow:  0 0 2px rgba(0, 0, 0, .8);
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  z-index: 1000;
+  top: 100px;
+  right: 100px;
+  background-color: rgba(192, 220, 236, .5);
+}
+

@@ -20,12 +20,29 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
-              "src/styles.css"
+              "src/theme.less",
+              "src/styles.css",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/jquery-ui-dist/jquery-ui.css",
+              "src/assets/font/iconfont.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery-ui-dist/jquery-ui.js",
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/lodash/index.js",
+              "node_modules/gojs/release/go.js",
+              "node_modules/gojs/release/go-debug.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/echarts/echarts.simple.js"
+            ]
           },
           "configurations": {
             "production": {
