@@ -14,7 +14,7 @@ div {
   margin: 5px;
   position: absolute;
   float: left;
-  z-index: 1000;
+  z-index: 1;
 
 i {
   font-size: 40px;
@@ -400,7 +400,7 @@ i {
   bottom: 0;
   right: 0;
   top: 0;
-  left: 260px;
+  left: 0px;
   border: 1px solid darkgray;
 //pointer-events: none; //点穿事件，作用到下层
 //canvas{
@@ -442,3 +442,33 @@ display: none; //自定义分组默认都不显示
   background-color: rgba(192, 220, 236, .5);
 }
 
+
+#echartsbtn{
+  position: absolute;
+  bottom:40px;
+  right:40px;
+  height:40px;
+  width:40px;
+  border-radius: 20px;
+  padding:10px;
+  box-shadow: 0 0 4px rgba(10,10,10,.5);
+  background-color: rgba(0, 88, 174, 0.5);
+  -webkit-transition-duration: 400ms;
+  -moz-transition-duration: 400ms;
+  -ms-transition-duration: 400ms;
+  -o-transition-duration: 400ms;
+  transition-duration: 400ms;
+  font-size: 0;
+  cursor: pointer;
+  user-select: none;
+  z-index: 10;
+  i{
+    font-size: 20px;
+    color:#ffffff;
+    line-height: 20px;
+  }
+}
+
+#echartsbtn:hover{
+  background-color: rgba(0, 88, 174, 0.9);
+}

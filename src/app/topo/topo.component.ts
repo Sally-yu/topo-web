@@ -162,14 +162,12 @@ export class TopoComponent implements OnInit {
     {svg: 'LineV', category: 'shape'},
     {svg: 'PlusLine', category: 'shape'},
   ];
-  optMap = false;
   timeOutId;
 
   //连线动效用参数
   opacity = 1;
   down = true;
 
-  mapIcon = 'icon-setting';
 
   //默认的空设备，防止html绑定不到字段报错
   private defaultDevice = {
@@ -659,22 +657,12 @@ export class TopoComponent implements OnInit {
           routing: go.Link.Orthogonal, //直角
           corner: 15,
         },
-        // make sure links come in from the proper direction and go out appropriately
-        // new go.Binding('fromPortId', 'fromPortId', function (d) {
-        //   return spotConverter(d);
-        // }).makeTwoWay(),
-        // new go.Binding('toPortId', 'toPortId', function (d) {
-        //   return spotConverter(d);
-        // }).makeTwoWay(),
-        // new go.Binding("points").makeTwoWay(),
-        // mark each Shape to get the link geometry with isPanelMain: true
         $(go.Shape, {isPanelMain: true, stroke: '#41BFEC'/* blue*/, strokeWidth: 10},
           new go.Binding('stroke', 'color')),
         $(go.Shape, {isPanelMain: true, stroke: 'white', strokeWidth: 3, name: 'PIPE', strokeDashArray: [20, 40]})
       );
 
     // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
-
 
     self.diagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
     self.diagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
@@ -734,8 +722,8 @@ export class TopoComponent implements OnInit {
     this.http.post(this.findNameUrl, JSON.stringify(this.workName)).subscribe(res => {
       console.log(res);
       if (res['Status'] == '0') {
-        this.message.info('布局名称已存在');
-      } else if (this.currWork.name) {
+        this.message.info('');
+      } else {
         this.save();
       }
     });
@@ -763,10 +751,11 @@ export class TopoComponent implements OnInit {
       }
     );
     //新增
+    console.log(post);
     this.http.post(this.workUrl, post).subscribe(res => {
       if (res) {
+        this.currWork=res;
         this.message.success('保存成功');
-        this.currWork.name = this.workName;
       }
     }, error1 => {
       console.log(error1);
@@ -799,6 +788,10 @@ export class TopoComponent implements OnInit {
   //加载，重新加载，从列表传进来的布局图，未保存前可刷新加载
   load() {
     this.diagram.model = go.Model.fromJson(this.currWork);
+
+    //绑定出入点字段，必需放在go.Model.fromJson之后，别问为什么，我也不清楚
+    this.diagram.model.linkFromPortIdProperty = 'fromPortId';
+    this.diagram.model.linkToPortIdProperty = 'toPortId';
   }
 
   //获取后台设备列表
@@ -873,7 +866,7 @@ export class TopoComponent implements OnInit {
   // 关闭
   close() {
     this.currWork = null;
-    this.router.navigate(['/']);
+    this.router.navigate(['/topo/list']);
   }
 
   //显示工具栏
@@ -899,20 +892,18 @@ export class TopoComponent implements OnInit {
   toggleleft() {
     this.diagram.currentTool.stopTool();
     var display = $('#leftbar').css('display');
-    if (display === 'none') {
+    if (display == 'none') {
       $('#leftbar').css('display', 'block');
       $('#leftbtn').toggleClass('icon-left');
       $('#leftbtn').toggleClass('icon-right');
       $('#dropleft').css('left', '260px');
       $('#myDiagramDiv').css('left', '260px');
-      $('#map').css('left', '260px');
     } else {
       $('#leftbar').css('display', 'none');
       $('#leftbtn').toggleClass('icon-left');
       $('#leftbtn').toggleClass('icon-right');
       $('#dropleft').css('left', '0');
       $('#myDiagramDiv').css('left', '0');
-      $('#map').css('left', '0');
     }
     this.load();
   }
@@ -1319,11 +1310,12 @@ export class TopoComponent implements OnInit {
   ngOnInit() {
     this.id = this.routeinfo.snapshot.params['id'];
     if (!this.id) {
-      this.router.navigate(['/item/' + UUID.UUID()]);
+      this.router.navigate(['/topo/item/' + UUID.UUID()]);
     }
     this.init();
-    this.diagram.model.linkFromPortIdProperty = 'fromPortId';
-    this.diagram.model.linkToPortIdProperty = 'toPortId';
+
+    // this.diagram.model.linkFromPortIdProperty = 'fromPortId';
+    // this.diagram.model.linkToPortIdProperty = 'toPortId';
     // this.makeMap();
     this.loop();
     this.currWork = {
@@ -1340,6 +1332,7 @@ export class TopoComponent implements OnInit {
     this.http.post(this.workUrl, post).subscribe(res => {
       if (res) {
         this.currWork = res;
+        console.log(this.currWork);
         this.workName = this.currWork.name;
         this.load();
       }

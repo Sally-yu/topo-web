@@ -4,7 +4,7 @@ import {NzMessageService} from 'ng-zorro-antd';
 import {UrlService} from '../url.service';
 import * as go from 'gojs';
 import {UUID} from 'angular2-uuid';
-import {Route, Router} from '@angular/router';
+import {Router} from '@angular/router';
 
 
 declare var $:any;
@@ -48,10 +48,10 @@ export class ListComponent implements OnInit {
   // 点选一行编辑，跳转到编辑页面;key传null为新增跳转
   rowSelected(key) {
     if (key) { //修改
-      this.router.navigate(['/item/'+key]);
+      this.router.navigate(['/topo/item/'+key]);
       // console.log(this.currWork);
     } else if (key == null) { //新增
-      this.router.navigate(['/item/'+UUID.UUID()]);
+      this.router.navigate(['/topo/item/'+UUID.UUID()]);
     }
   }
 

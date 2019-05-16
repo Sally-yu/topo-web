@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UrlService {
 
-  constructor() { }
+  constructor(
+    private http:HttpClient
+  ) { }
 
   public port = "8090";
   // public host=window.location.protocol+'//'+window.location.hostname+':'+this.port;
@@ -23,4 +26,5 @@ export class UrlService {
 
   public workUrl=this.host+'/workspace';
   public findName=this.host+'/workspace/findname';//查找同名布局是否已存在
+
 }

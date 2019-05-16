@@ -1,6 +1,6 @@
 <div style="height: 100%;width:100%" id="content">
   <div id="topbar">
-    <div class="topbtn" (click)="close()" nzTitle="返回" nzPlacement="bottom" nz-tooltip>
+    <div class="topbtn" (click)="close()" nzTitle="列表" nzPlacement="bottom" nz-tooltip>
       <i class="icon-Import"></i><br>
       <!--返回-->
     </div>
@@ -84,7 +84,6 @@
   </div>
 
   <div id="toolcontent">
-    <!--<div id="map" style="position: absolute;width:1200px;height:800px;"></div>-->
     <div id="droptop" (click)="toggleTop()">
       <i class="icon-up"></i>
     </div>
@@ -145,7 +144,6 @@
     <div id="dropleft" (click)="toggleleft()">
       <i id="leftbtn" class="icon-left"></i>
     </div>
-    <div id="map"></div>
     <div id="toolTipDIV">
       <ul style="list-style: none">
         <li>设备信息：{{currDevice["svg"]}}</li>
