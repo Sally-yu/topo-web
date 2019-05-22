@@ -674,24 +674,20 @@ export class CardComponent implements OnInit {
     // this.diagram.model.linkToPortIdProperty = 'toPortId';
     // this.makeMap();
     this.loop();
-    this.currWork = {
-      'name': '',
-      'key': this.id,
-      'class': '',
-      'linkDataArray': [],
-      'nodeDataArray': []
-    };
-    let post = {
-      'Opt': 'find',
-      'Workspace': this.currWork
-    };
-    this.http.post(this.workUrl, post).subscribe(res => {
-      if (res) {
-        this.currWork = res;
-        console.log(this.currWork);
-        this.load();
+    this.http.post(this.workUrl, {opt: 'find', workspace: {key: this.id}}).subscribe(data => {
+      if (data) {
+        let res = JSON.parse(JSON.stringify(data));
+        this.currWork = {
+          'name': res.name,//布局名称
+          'key': res.key,
+          'class': res.class,
+          'linkDataArray': res.linkDataArray,
+          'nodeDataArray': res.nodeDataArray,
+        };
       }
+      this.load();
     });
+
   }
 
 }

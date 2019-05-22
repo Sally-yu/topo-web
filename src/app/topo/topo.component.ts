@@ -1,7 +1,35 @@
-/**
- * 写这篇代码的时候，只有我和耶稣知道我写了啥
- * 现在好了
- * 就剩耶稣还知道我当时写了啥
+/***
+ *                                         ,s555SB@@&
+ *                                      :9H####@@@@@Xi
+ *                                     1@@@@@@@@@@@@@@8
+ *                                   ,8@@@@@@@@@B@@@@@@8
+ *                                  :B@@@@X3hi8Bs;B@@@@@Ah,
+ *             ,8i                  r@@@B:     1S ,M@@@@@@#8;
+ *            1AB35.i:               X@@8 .   SGhr ,A@@@@@@@@S
+ *            1@h31MX8                18Hhh3i .i3r ,A@@@@@@@@@5
+ *            ;@&i,58r5                 rGSS:     :B@@@@@@@@@@A
+ *             1#i  . 9i                 hX.  .: .5@@@@@@@@@@@1
+ *              sG1,  ,G53s.              9#Xi;hS5 3B@@@@@@@B1
+ *               .h8h.,A@@@MXSs,           #@H1:    3ssSSX@1
+ *               s ,@@@@@@@@@@@@Xhi,       r#@@X1s9M8    .GA981
+ *               ,. rS8H#@@@@@@@@@@#HG51;.  .h31i;9@r    .8@@@@BS;i;
+ *                .19AXXXAB@@@@@@@@@@@@@@#MHXG893hrX#XGGXM@@@@@@@@@@MS
+ *                s@@MM@@@hsX#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&,
+ *              :GB@#3G@@Brs ,1GM@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@B,
+ *            .hM@@@#@@#MX 51  r;iSGAM@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@8
+ *          :3B@@@@@@@@@@@&9@h :Gs   .;sSXH@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@:
+ *      s&HA#@@@@@@@@@@@@@@M89A;.8S.       ,r3@@@@@@@@@@@@@@@@@@@@@@@@@@@r
+ *   ,13B@@@@@@@@@@@@@@@@@@@5 5B3 ;.         ;@@@@@@@@@@@@@@@@@@@@@@@@@@@i
+ *  5#@@#&@@@@@@@@@@@@@@@@@@9  .39:          ;@@@@@@@@@@@@@@@@@@@@@@@@@@@;
+ *  9@@@X:MM@@@@@@@@@@@@@@@#;    ;31.         H@@@@@@@@@@@@@@@@@@@@@@@@@@:
+ *   SH#@B9.rM@@@@@@@@@@@@@B       :.         3@@@@@@@@@@@@@@@@@@@@@@@@@@5
+ *     ,:.   9@@@@@@@@@@@#HB5                 .M@@@@@@@@@@@@@@@@@@@@@@@@@B
+ *           ,ssirhSM@&1;i19911i,.             s@@@@@@@@@@@@@@@@@@@@@@@@@@S
+ *              ,,,rHAri1h1rh&@#353Sh:          8@@@@@@@@@@@@@@@@@@@@@@@@@#:
+ *            .A3hH@#5S553&@@#h   i:i9S          #@@@@@@@@@@@@@@@@@@@@@@@@@A.
+ *
+ *
+ *    又看源码，看你**呀！
  */
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
@@ -24,6 +52,10 @@ declare var $: any; //jQuery
 export class TopoComponent implements OnInit {
 
   private id;
+  private note: any;
+  private code: any;
+  private sence: any;
+  private released: any;
 
   constructor(
     private url: UrlService,
@@ -34,7 +66,13 @@ export class TopoComponent implements OnInit {
   ) {
   }
 
-  currWork;
+  currWork = {
+    'name': null,//布局名称
+    'key': null,
+    'class': null,
+    'linkDataArray': [],
+    'nodeDataArray': [],
+  };
 
   cusMenu = [
     {
@@ -717,7 +755,7 @@ export class TopoComponent implements OnInit {
   //保存前，若非新增 直接保存
   beforeSave() {
     if (this.currWork.name) {//有名称，不是新增，直接保存
-      this.save();
+      this.save(false);
     } else {
       this.saveWork = true;//弹出保存对话框 认为是新增
     }
@@ -728,41 +766,51 @@ export class TopoComponent implements OnInit {
     this.http.post(this.findNameUrl, JSON.stringify(this.workName)).subscribe(res => {
       // console.log(res);
       if (res['Status'] == '0') {
-        this.message.info('');
+        this.message.info('该名称已被使用！');
       } else {
-        this.save();
+        this.save(false);
       }
     });
   }
 
+  //发布
+  release(b: boolean) {
+    this.save(b);
+  }
+
   //保存布局
-  save() {
-    let dataarray = this.diagram.model.toJson();
-    let datajson = JSON.parse(dataarray);
+  save(r: boolean) {
+    // let dataarray = this.diagram.model.toJson();
+    // let datajson = JSON.parse(dataarray);
     let data = {
       'name': this.workName,//布局名称
       'key': this.currWork.key ? this.currWork.key : UUID.UUID(),
-      'class': this.currWork.class ? this.currWork.class : datajson.class,
-      'linkDataArray': datajson.linkDataArray,
-      'nodeDataArray': datajson.nodeDataArray
+      'class': this.currWork.class,
+      'linkDataArray': this.currWork.linkDataArray,
+      'nodeDataArray': this.currWork.nodeDataArray,
+
+      //gojs未预置的属性 直接绑定到图标模型会报错
+      'note': this.note,
+      'code': this.code,//未指定编号的交到后台处理
+      'sence': this.sence, //关联场景
+      'released': r ? true : this.released, //发布标记
     };
     // console.log(JSON.stringify(data));
     let post = {
-      'Opt': 'save',
-      'Workspace': data
+      opt: 'save',
+      workspace: data
     };
-    this.currWork.key = data.key; //保留key，先删后插，key不变
+    // this.currWork.key = data.key; //保留key，先删后插，key不变
     //删除
     this.http.post(this.workUrl, {opt: 'delete', workspace: {key: this.currWork.key}}).subscribe(res => {
       }
-    );
+      , error1 => {
+        console.log('not found');
+      });
+    console.log(post);
     //新增
-    // console.log(post);
     this.http.post(this.workUrl, post).subscribe(res => {
-      if (res) {
-        this.currWork=res;
-        this.message.success('保存成功');
-      }
+      this.message.success('保存成功');
     }, error1 => {
       // console.log(error1);
       this.message.info('保存失败:' + error1);
@@ -794,7 +842,6 @@ export class TopoComponent implements OnInit {
   //加载，重新加载，从列表传进来的布局图，未保存前可刷新加载
   load() {
     this.diagram.model = go.Model.fromJson(this.currWork);
-
     //绑定出入点字段，必需放在go.Model.fromJson之后，别问为什么，我也不清楚
     this.diagram.model.linkFromPortIdProperty = 'fromPortId';
     this.diagram.model.linkToPortIdProperty = 'toPortId';
@@ -1080,8 +1127,6 @@ export class TopoComponent implements OnInit {
             cusPalette.commit(function (d) {
               var contextmenu = obj.part;
               var nodedata = contextmenu.data;
-              // console.log(contextmenu);
-              // console.log(nodedata);
             });
           }
 
@@ -1324,25 +1369,27 @@ export class TopoComponent implements OnInit {
     // this.diagram.model.linkToPortIdProperty = 'toPortId';
     // this.makeMap();
     this.loop();
-    this.currWork = {
-      'name': '',
-      'key': this.id,
-      'class': '',
-      'linkDataArray': [],
-      'nodeDataArray': []
-    };
-    let post = {
-      'Opt': 'find',
-      'Workspace': this.currWork
-    };
-    this.http.post(this.workUrl, post).subscribe(res => {
-      if (res) {
-        this.currWork = res;
+    this.http.post(this.workUrl, {opt: 'find', workspace: {key: this.id}}).subscribe(data => {
+      if (data) {
+        let res = JSON.parse(JSON.stringify(data));
+        this.currWork = {
+          'name': res.name,//布局名称
+          'key': res.key,
+          'class': res.class,
+          'linkDataArray': res.linkDataArray,
+          'nodeDataArray': res.nodeDataArray,
+        };
+        this.code = res.code;
+        this.note = res.note;
+        this.sence = res.sence;
+        this.released = res.released;
+
         // console.log(this.currWork);
-        this.workName = this.currWork.name;
-        this.load();
+        this.workName = res.name;
       }
+      this.load();//获取到数据再给图标绑定
     });
+
   }
 
 }

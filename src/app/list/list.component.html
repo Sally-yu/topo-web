@@ -17,6 +17,7 @@
       <th>id</th>
       <th>类型</th>
       <th>操作</th>
+      <th>发布</th>
     </tr>
     </thead>
     <tbody>
@@ -27,11 +28,14 @@
       <td>{{data.key}}</td>
       <td>{{data.class}}</td>
       <td>
-        <a (mouseenter)="preview(data.key)" (mouseleave)="preview(null)">预览</a>
-        <nz-divider nzType="vertical"></nz-divider>
         <a (click)="rowSelected(data.key)">编辑</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a (click)="delete(data.key)" style="color:#F22;">删除</a>
+      </td>
+      <td>
+        <a (mouseenter)="preview(data.key)" (mouseleave)="preview(null)">预览</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <nz-switch [(ngModel)]="data.released" (ngModelChange)="release(data.key)" [nzLoading]="loading" ></nz-switch>
       </td>
     </tr>
     </tbody>

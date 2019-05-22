@@ -7,7 +7,7 @@ import {UUID} from 'angular2-uuid';
 import {Router} from '@angular/router';
 
 
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'app-list',
@@ -16,6 +16,7 @@ declare var $:any;
 })
 export class ListComponent implements OnInit {
 
+  loading=false;
   diagram;
   workSpc;
   listUrl = this.url.workUrl;
@@ -24,6 +25,7 @@ export class ListComponent implements OnInit {
   //连线动效用参数
   opacity = 1;
   down = true;
+
   constructor(
     private http: HttpClient,
     private message: NzMessageService,
@@ -48,10 +50,10 @@ export class ListComponent implements OnInit {
   // 点选一行编辑，跳转到编辑页面;key传null为新增跳转
   rowSelected(key) {
     if (key) { //修改
-      this.router.navigate(['/topo/item/'+key]);
+      this.router.navigate(['/topo/item/' + key]);
       // console.log(this.currWork);
     } else if (key == null) { //新增
-      this.router.navigate(['/topo/item/'+UUID.UUID()]);
+      this.router.navigate(['/topo/item/' + UUID.UUID()]);
     }
   }
 
@@ -81,6 +83,27 @@ export class ListComponent implements OnInit {
       $('#diagram').css('transform', 'rotateX(90deg)');
       this.diagram.model = go.Model.fromJson({});
     }
+  }
+
+  release(key) {
+    this.loading=true;
+    let data = this.workSpc.filter(d => d.key === key)[0]; // 当前选中设备
+    console.log(data)
+    //删除
+    this.http.post(this.listUrl, {opt: 'delete', workspace: {key:key}}).subscribe(res => {
+      }
+    );
+    //新增
+    this.http.post(this.listUrl, {opt:'save',workspace:data}).subscribe(res => {
+      if (res) {
+        this.message.success('操作成功');
+        this.loading=false;
+        // this.getWorkSpc();
+      }
+    }, error1 => {
+      // console.log(error1);
+      this.message.info('操作失败:' + error1);
+    });
   }
 
   //初始化布局图和工具栏
