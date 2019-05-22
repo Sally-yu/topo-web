@@ -41,7 +41,7 @@ export class ListComponent implements OnInit {
       this.workSpc = res;
     }, error1 => {
       this.message.info(error1);
-      console.log(error1);
+      // console.log(error1);
     });
   }
 

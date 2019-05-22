@@ -1,3 +1,9 @@
+/**
+ * 写这篇代码的时候，只有我和耶稣知道我写了啥
+ * 现在好了
+ * 就剩耶稣还知道我当时写了啥
+ */
+
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpRequest, HttpResponse} from '@angular/common/http';
 import {NzMessageService, UploadFile, UploadFileStatus} from 'ng-zorro-antd';
@@ -354,7 +360,7 @@ export class TopoComponent implements OnInit {
       var pt = diagram.lastInput.viewPoint;
       self.currDevice = obj.data;
       self.matchDevice();
-      console.log(self.currDevice);
+      // console.log(self.currDevice);
       var fromLeft = document.getElementById('leftbar').offsetWidth;
       var left = pt.x + fromLeft + 10;//左侧菜单宽度  左侧图源栏款 10点向右偏移，在鼠标点击位置右侧
       var top = pt.y + 10;
@@ -386,7 +392,7 @@ export class TopoComponent implements OnInit {
     }
 
     function showContextMenu(obj, diagram, tool) {
-      console.log(obj, diagram, tool);
+      // console.log(obj, diagram, tool);
       // Show only the relevant buttons given the current state.
       var cmd = diagram.commandHandler;
       // Now show the whole context menu element
@@ -394,13 +400,13 @@ export class TopoComponent implements OnInit {
       // we don't bother overriding positionContextMenu, we just do it here:
       self.currDevice = obj.data;
       self.matchDevice();
-      console.log(self.currDevice);
+      // console.log(self.currDevice);
       var pt = diagram.lastInput.viewPoint;
       var fromLeft = document.getElementById('leftbar').offsetWidth;
       var left = pt.x + fromLeft + 10; //左侧菜单宽度  左侧图源栏款 10点向右偏移，在鼠标点击位置右侧
       var top = pt.y + 10;
       var r = self.getPos(pt.x, pt.y);//计算四角中最接近的，以此调整位置
-      console.log(r);
+      // console.log(r);
       switch (r) {
         case 1:
           break;
@@ -682,7 +688,7 @@ export class TopoComponent implements OnInit {
     switch (val) {
       case 'addDevice':
         this.visible = true;
-        console.log(this.currDevice);
+        // console.log(this.currDevice);
         break;
       case 'deviceInfo':
         alert(JSON.stringify(this.dataDevice));
@@ -720,7 +726,7 @@ export class TopoComponent implements OnInit {
   //保存对话框的确定事件 检查名称是否有重复
   modalSave() {
     this.http.post(this.findNameUrl, JSON.stringify(this.workName)).subscribe(res => {
-      console.log(res);
+      // console.log(res);
       if (res['Status'] == '0') {
         this.message.info('');
       } else {
@@ -740,7 +746,7 @@ export class TopoComponent implements OnInit {
       'linkDataArray': datajson.linkDataArray,
       'nodeDataArray': datajson.nodeDataArray
     };
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     let post = {
       'Opt': 'save',
       'Workspace': data
@@ -751,14 +757,14 @@ export class TopoComponent implements OnInit {
       }
     );
     //新增
-    console.log(post);
+    // console.log(post);
     this.http.post(this.workUrl, post).subscribe(res => {
       if (res) {
         this.currWork=res;
         this.message.success('保存成功');
       }
     }, error1 => {
-      console.log(error1);
+      // console.log(error1);
       this.message.info('保存失败:' + error1);
     });
     this.saveWork = false;
@@ -768,7 +774,7 @@ export class TopoComponent implements OnInit {
   getPos(w, h) {
     var backH = $('#myDiagramDiv').height();//去px绝对数值
     var backW = $('#myDiagramDiv').width();//去px绝对数值
-    console.log(w, backW, h, backH);
+    // console.log(w, backW, h, backH);
     if (h < backH / 2) {
       if (w <= backW / 2) {
         return 1;//左上角
@@ -837,7 +843,7 @@ export class TopoComponent implements OnInit {
     this.visible = false;
     this.currDevice['deviceid'] = this.tempDeviceId; //确认改变currdevice
     this.tempDeviceId = '';
-    console.log(this.currDevice);
+    // console.log(this.currDevice);
     this.message.success('成功绑定设备');
   }
 
@@ -1025,11 +1031,11 @@ export class TopoComponent implements OnInit {
   //修改分组对话框选项变更
   selectedChanged() {
     this.fileList = [];
-    console.log('changed');
+    // console.log('changed');
     this.http.get(this.cusUrl).subscribe(res => {
       let data;
       data = res;
-      console.log(data);
+      // console.log(data);
       let files = data.filter(d => d.display === true && d.divid === this.cusUpload.divid);
       files.forEach(e => {
         e['svg'].forEach(ec => {
@@ -1045,9 +1051,9 @@ export class TopoComponent implements OnInit {
           this.fileList = [...this.fileList, file];
         });
       });
-      console.log(this.fileList);
+      // console.log(this.fileList);
     }, error1 => {
-      console.log(error1);
+      // console.log(error1);
     });
   }
 
@@ -1058,7 +1064,7 @@ export class TopoComponent implements OnInit {
       this.cusData = res;
       this.cusAva = this.cusData.filter(d => d.display === true);//已自定义的信息
       var self = this;
-      console.log('ava' + JSON.stringify(this.cusAva));
+      // console.log('ava' + JSON.stringify(this.cusAva));
       this.cusAva.forEach(e => {
           this.cusMenu[e.divid[e.divid.length - 1]] = e;
           document.getElementById(e.divid).style.display = 'block';//显示上传过的分组
@@ -1074,8 +1080,8 @@ export class TopoComponent implements OnInit {
             cusPalette.commit(function (d) {
               var contextmenu = obj.part;
               var nodedata = contextmenu.data;
-              console.log(contextmenu);
-              console.log(nodedata);
+              // console.log(contextmenu);
+              // console.log(nodedata);
             });
           }
 
@@ -1103,7 +1109,7 @@ export class TopoComponent implements OnInit {
           cusPalette.model = new go.GraphLinksModel(e.svg);
         }
       );
-      console.log(this.cusMenu);
+      // console.log(this.cusMenu);
     });
   }
 
@@ -1332,7 +1338,7 @@ export class TopoComponent implements OnInit {
     this.http.post(this.workUrl, post).subscribe(res => {
       if (res) {
         this.currWork = res;
-        console.log(this.currWork);
+        // console.log(this.currWork);
         this.workName = this.currWork.name;
         this.load();
       }
