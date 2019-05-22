@@ -324,6 +324,7 @@ export class CardComponent implements OnInit {
         ),
         $(go.Shape, 'Circle',
           {
+            name:'CIRCLE',
             alignment: go.Spot.TopRight, alignmentFocus: go.Spot.TopRight,
             width: 20, height: 20, strokeWidth: 0
           },
@@ -370,8 +371,11 @@ export class CardComponent implements OnInit {
           routing: go.Link.Orthogonal, //直角
           corner: 15,
         },
-        $(go.Shape, {isPanelMain: true, stroke: '#41BFEC'/* blue*/, strokeWidth: 10},
-          new go.Binding('stroke', 'color')),
+        $(go.Shape, {isPanelMain: true, strokeWidth: 10},
+          new go.Binding('stroke',function (c) {
+            return    '#41BFEC';
+          })
+        ),
         $(go.Shape, {isPanelMain: true, stroke: 'white', strokeWidth: 3, name: 'PIPE', strokeDashArray: [20, 40]})
       );
 
@@ -438,19 +442,36 @@ export class CardComponent implements OnInit {
         shape.strokeDashOffset = (off <= 0) ? 60 : off;
         // animte (strobe) the opacity:
         if (self.down) {
-          self.opacity = self.opacity - 0.01;
+          self.opacity = self.opacity - 0.005;
         } else {
           self.opacity = self.opacity + 0.003;
         }
-        if (self.opacity <= 0) {
+        if (self.opacity <= 0.3) {
           self.down = !self.down;
-          self.opacity = 0;
+          self.opacity = 0.3;
         }
         if (self.opacity > 1) {
           self.down = !self.down;
           self.opacity = 1;
         }
         shape.opacity = self.opacity;
+      });
+      diagram.nodes.each(function (node) {
+        var circle=node.findObject('CIRCLE');
+        if (self.down) {
+          self.opacity = self.opacity - 0.005;
+        } else {
+          self.opacity = self.opacity + 0.003;
+        }
+        if (self.opacity <= 0.3) {
+          self.down = !self.down;
+          self.opacity = 0.3;
+        }
+        if (self.opacity > 1) {
+          self.down = !self.down;
+          self.opacity = 1;
+        }
+        circle.opacity = self.opacity;
       });
       diagram.skipsUndoManager = oldskips;
       self.loop();
