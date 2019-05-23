@@ -16,7 +16,6 @@ declare var $: any;
 })
 export class ListComponent implements OnInit {
 
-  loading=false;
   diagram;
   workSpc;
   listUrl = this.url.workUrl;
@@ -34,6 +33,7 @@ export class ListComponent implements OnInit {
   ) {
   }
 
+  //布局列表
   getWorkSpc() {
     const data = {
       opt: 'all',
@@ -43,7 +43,6 @@ export class ListComponent implements OnInit {
       this.workSpc = res;
     }, error1 => {
       this.message.info(error1);
-      // console.log(error1);
     });
   }
 
@@ -85,8 +84,8 @@ export class ListComponent implements OnInit {
     }
   }
 
+  //打发布标记，自动双向
   release(key) {
-    this.loading=true;
     let data = this.workSpc.filter(d => d.key === key)[0]; // 当前选中设备
     console.log(data)
     //删除
@@ -97,7 +96,6 @@ export class ListComponent implements OnInit {
     this.http.post(this.listUrl, {opt:'save',workspace:data}).subscribe(res => {
       if (res) {
         this.message.success('操作成功');
-        this.loading=false;
         // this.getWorkSpc();
       }
     }, error1 => {
@@ -253,6 +251,7 @@ export class ListComponent implements OnInit {
         ),
         $(go.Shape, 'Circle',
           {
+            name:"CIRCLE",
             alignment: go.Spot.TopRight, alignmentFocus: go.Spot.TopRight,
             width: 20, height: 20, strokeWidth: 0
           },
@@ -324,19 +323,36 @@ export class ListComponent implements OnInit {
         shape.strokeDashOffset = (off <= 0) ? 60 : off;
         // animte (strobe) the opacity:
         if (self.down) {
-          self.opacity = self.opacity - 0.01;
+          self.opacity = self.opacity - 0.005;
         } else {
           self.opacity = self.opacity + 0.003;
         }
-        if (self.opacity <= 0) {
+        if (self.opacity <= 0.3) {
           self.down = !self.down;
-          self.opacity = 0;
+          self.opacity = 0.3;
         }
         if (self.opacity > 1) {
           self.down = !self.down;
           self.opacity = 1;
         }
         shape.opacity = self.opacity;
+      });
+      diagram.nodes.each(function (node) {
+        var circle = node.findObject('CIRCLE');
+        if (self.down) {
+          self.opacity = self.opacity - 0.005;
+        } else {
+          self.opacity = self.opacity + 0.003;
+        }
+        if (self.opacity <= 0.3) {
+          self.down = !self.down;
+          self.opacity = 0.3;
+        }
+        if (self.opacity > 1) {
+          self.down = !self.down;
+          self.opacity = 1;
+        }
+        circle.opacity = self.opacity;
       });
       diagram.skipsUndoManager = oldskips;
       self.loop();

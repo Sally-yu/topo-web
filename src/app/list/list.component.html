@@ -14,8 +14,9 @@
     <thead>
     <tr>
       <th>名称</th>
-      <th>id</th>
-      <th>类型</th>
+      <th>编号</th>
+      <th>场景</th>
+      <th>备注</th>
       <th>操作</th>
       <th>发布</th>
     </tr>
@@ -25,8 +26,9 @@
       <td>
         {{data.name}}
       </td>
-      <td>{{data.key}}</td>
-      <td>{{data.class}}</td>
+      <td>{{data.code}}</td>
+      <td>{{data.sence}}</td>
+      <td>{{data.note}}</td>
       <td>
         <a (click)="rowSelected(data.key)">编辑</a>
         <nz-divider nzType="vertical"></nz-divider>
@@ -35,7 +37,7 @@
       <td>
         <a (mouseenter)="preview(data.key)" (mouseleave)="preview(null)">预览</a>
         <nz-divider nzType="vertical"></nz-divider>
-        <nz-switch [(ngModel)]="data.released" (ngModelChange)="release(data.key)" [nzLoading]="loading" ></nz-switch>
+        <nz-switch [(ngModel)]="data.released" (ngModelChange)="release(data.key)" ></nz-switch>
       </td>
     </tr>
     </tbody>

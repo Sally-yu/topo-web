@@ -41,6 +41,8 @@ import * as go from 'gojs';
 import * as echarts from 'node_modules/echarts/echarts.simple';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UrlService} from '../url.service';
+import {resolve} from 'url';
+import {reject} from 'q';
 
 declare var $: any; //jQuery
 
@@ -51,11 +53,11 @@ declare var $: any; //jQuery
 })
 export class TopoComponent implements OnInit {
 
-  private id;
-  private note: any;
-  private code: any;
-  private sence: any;
-  private released: any;
+  id;
+  note: any;
+  code;
+  sence: any;
+  released = false;
 
   constructor(
     private url: UrlService,
@@ -136,7 +138,7 @@ export class TopoComponent implements OnInit {
   cusAva = [];
 
   diagram;
-  flag = 1000;
+
   DataArray = [
     {svg: '卡车', deviceid: '', status: ''},
     {svg: '卡车1', deviceid: '', status: ''},
@@ -298,7 +300,6 @@ export class TopoComponent implements OnInit {
 
   tempDeviceId = '';
   devices;
-  zoom = 0;
 
 
   visible = false;//主布局右键菜单显示
@@ -315,7 +316,7 @@ export class TopoComponent implements OnInit {
   uploadUrl = this.url.uploadUrl;
   cusUrl = this.url.cusUrl;
   updateCus = this.url.updateCus;
-  findNameUrl = this.url.findName;
+  codeUrl = this.url.codeUrl;
 
   uploading = false;
   fileList: UploadFile[] = [];
@@ -707,7 +708,8 @@ export class TopoComponent implements OnInit {
             return self.lineColor(c);
           })
         ),
-        $(go.Shape, {isPanelMain: true, stroke: 'white', strokeWidth: 3, name: 'PIPE', strokeDashArray: [20, 40]})
+        $(go.Shape, {isPanelMain: true, stroke: 'white', strokeWidth: 3, name: 'PIPE', strokeDashArray: [20, 40]}),
+        {contextMenu: ContextMenu}
       );
 
     // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
@@ -725,10 +727,9 @@ export class TopoComponent implements OnInit {
 
   }
 
-  lineColor(c:any){
+  lineColor(c: any) {
     return '#42bdff';
   }
-
 
   //设备右键菜单选项
   click(val) {
@@ -763,23 +764,26 @@ export class TopoComponent implements OnInit {
 
   //保存前，若非新增 直接保存
   beforeSave() {
-    if (this.currWork.name) {//有名称，不是新增，直接保存
-      this.save(false);
-    } else {
-      this.saveWork = true;//弹出保存对话框 认为是新增
-    }
+    // if (this.currWork.name) {//有名称，不是新增，直接保存
+    //   this.save(false);
+    // } else {
+    //   this.saveWork = true;//弹出保存对话框 认为是新增
+    // }
+    this.saveWork = true;//弹出保存对话框 认为是新增
+
   }
 
   //保存对话框的确定事件 检查名称是否有重复
   modalSave() {
-    this.http.post(this.findNameUrl, JSON.stringify(this.workName)).subscribe(res => {
-      // console.log(res);
-      if (res['Status'] == '0') {
-        this.message.info('该名称已被使用！');
-      } else {
-        this.save(false);
-      }
-    });
+    // this.http.post(this.findNameUrl, JSON.stringify(this.workName)).subscribe(res => {
+    //   // console.log(res);
+    //   if (res['Status'] == '0') {
+    //     this.message.info('该名称已被使用！');
+    //   } else {
+    //     this.save(false);
+    //   }
+    // });
+    this.save(false);
   }
 
   //发布
@@ -793,7 +797,7 @@ export class TopoComponent implements OnInit {
     // let datajson = JSON.parse(dataarray);
     let data = {
       'name': this.workName,//布局名称
-      'key': this.currWork.key ? this.currWork.key : UUID.UUID(),
+      'key': this.id,
       'class': this.currWork.class,
       'linkDataArray': this.currWork.linkDataArray,
       'nodeDataArray': this.currWork.nodeDataArray,
@@ -804,7 +808,7 @@ export class TopoComponent implements OnInit {
       'sence': this.sence, //关联场景
       'released': r ? true : this.released, //发布标记
     };
-    // console.log(JSON.stringify(data));
+    console.log(JSON.stringify(data));
     let post = {
       opt: 'save',
       workspace: data
@@ -819,6 +823,7 @@ export class TopoComponent implements OnInit {
     console.log(post);
     //新增
     this.http.post(this.workUrl, post).subscribe(res => {
+      this.currWork.key = this.id;
       this.message.success('保存成功');
     }, error1 => {
       // console.log(error1);
@@ -1130,7 +1135,6 @@ export class TopoComponent implements OnInit {
     });
   }
 
-
   //获取所有自定义分组信息
   getCus() {
     this.http.get(this.cusUrl).subscribe(res => {
@@ -1384,6 +1388,14 @@ export class TopoComponent implements OnInit {
     }
   }
 
+  autoCode() {
+    if (!this.code) {
+      this.http.get(this.codeUrl).subscribe(res => {
+        this.code = 'TOPO_0000' + res.toString();
+      });
+    }
+  }
+
   ngOnInit() {
     this.id = this.routeinfo.snapshot.params['id'];
     if (!this.id) {
@@ -1405,16 +1417,20 @@ export class TopoComponent implements OnInit {
           'linkDataArray': res.linkDataArray,
           'nodeDataArray': res.nodeDataArray,
         };
-        this.code = res.code;
         this.note = res.note;
         this.sence = res.sence;
         this.released = res.released;
-
+        this.code = res.code;
         // console.log(this.currWork);
         this.workName = res.name;
       }
       this.load();//获取到数据再给图标绑定
+    }, error1 => {
+      console.log('not found,new');
+      this.autoCode(); //新增找不到，自动生成编号
+      this.load();
     });
+    this.load();
   }
 
 }

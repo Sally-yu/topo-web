@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpRequest, HttpResponse} from '@angular/common/http';
 import {NzMessageService, UploadFile, UploadFileStatus} from 'ng-zorro-antd';
 import {UUID} from 'angular2-uuid';
-import {filter} from 'rxjs/operators';
 import * as go from 'gojs';
 import * as echarts from 'node_modules/echarts/echarts.simple';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -457,7 +456,7 @@ export class CardComponent implements OnInit {
         shape.opacity = self.opacity;
       });
       diagram.nodes.each(function (node) {
-        var circle=node.findObject('CIRCLE');
+        var circle = node.findObject('CIRCLE');
         if (self.down) {
           self.opacity = self.opacity - 0.005;
         } else {
@@ -477,7 +476,6 @@ export class CardComponent implements OnInit {
       self.loop();
     }, 60);
   }
-
   //停止动画循环
   stopLoop() {
     clearTimeout(this.timeOutId);

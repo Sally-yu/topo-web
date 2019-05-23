@@ -33,7 +33,7 @@
     </div>
     <nz-divider class="divider" [nzType]="'vertical'"></nz-divider>
 
-    <div class="topbtn"  nzTitle="添加链接" nzPlacement="bottom" nz-tooltip>
+    <div class="topbtn" nzTitle="添加链接" nzPlacement="bottom" nz-tooltip>
       <i class="icon-link"></i><br>
       <!--链接-->
     </div>
@@ -52,7 +52,7 @@
     <!--&lt;!&ndash;切换&ndash;&gt;-->
     <!--</div>-->
 
-    <nz-divider class="divider" [nzType]="'vertical'" ></nz-divider>
+    <nz-divider class="divider" [nzType]="'vertical'"></nz-divider>
     <div class="topbtn" (click)="loop()" nzTitle="启动" nzPlacement="bottom" nz-tooltip>
       <i class="icon-right-circle"></i><br>
       <!--启动-->
@@ -155,12 +155,14 @@
     </div>
     <div id="contextMenu">
       <ul>
+        <!--<li id="start" (click)="loop()"><a  target="_self">启动</a></li>-->
+
         <li id="addDevice">
-          <a href="#" target="_self" (click)="click('addDevice')">关联设备</a>
+          <a target="_self" (click)="click('addDevice')">关联设备</a>
         </li>
-        <li id="deviceInfo" (click)="click('deviceInfo')"><a href="#" target="_self">设备信息</a></li>
-        <li id="delete" (click)="click('delete')"><a href="#" target="_self">删除设备</a></li>
-        <li id="copy" (click)="click('copy')"><a href="#" target="_self">复制</a></li>
+        <li id="deviceInfo" (click)="click('deviceInfo')"><a target="_self">设备信息</a></li>
+        <li id="delete" (click)="click('delete')"><a target="_self">删除设备</a></li>
+        <li id="copy" (click)="click('copy')"><a target="_self">复制</a></li>
       </ul>
     </div>
     <div id="myDiagramDiv"></div>
@@ -217,8 +219,18 @@
 
   <nz-modal nzWrapClassName="vertical-center-modal" [(nzVisible)]="saveWork" nzTitle="保存布局"
             (nzAfterClose)="saveWork=false" (nzOnCancel)="saveWork=false" (nzOnOk)="modalSave()">
-    <p>布局名称：</p>
-    <input type="text" nz-input [(ngModel)]="workName">
+    <label style="margin-bottom: 8px;">布局名称:
+      <input style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="workName">
+    </label>
+    <label style="margin-bottom: 8px;">布局编号:
+      <input style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="code">
+    </label>
+    <label style="margin-bottom: 8px;">关联场景:
+      <input style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="sence">
+    </label>
+    <label style="margin-bottom: 8px;">备注:
+      <textarea style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="note" nzAutosize=""></textarea>
+    </label>
   </nz-modal>
 
   <!--滑动缩放条 有问题 暂时不用-->

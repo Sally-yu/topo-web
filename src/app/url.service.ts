@@ -26,5 +26,6 @@ export class UrlService {
 
   public workUrl=this.host+'/workspace';
   public findName=this.host+'/workspace/findname';//查找同名布局是否已存在
+  public codeUrl=this.host+'/code';//最大编号
 
 }
