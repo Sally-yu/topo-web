@@ -24,6 +24,11 @@ export class ListComponent implements OnInit {
   //连线动效用参数
   opacity = 1;
   down = true;
+  searchValue;
+  loading=false;
+  pageSize=10;
+  currentIndex=1;
+  sizeOption=[5,10,20,50];
 
   constructor(
     private http: HttpClient,
@@ -35,14 +40,17 @@ export class ListComponent implements OnInit {
 
   //布局列表
   getWorkSpc() {
+    this.loading=true;
     const data = {
       opt: 'all',
       workspace: {}
     };
     this.http.post(this.listUrl, data).subscribe(res => {
       this.workSpc = res;
+      this.loading=false;
     }, error1 => {
       this.message.info(error1);
+      this.loading=false;
     });
   }
 
@@ -87,13 +95,13 @@ export class ListComponent implements OnInit {
   //打发布标记，自动双向
   release(key) {
     let data = this.workSpc.filter(d => d.key === key)[0]; // 当前选中设备
-    console.log(data)
+    console.log(data);
     //删除
-    this.http.post(this.listUrl, {opt: 'delete', workspace: {key:key}}).subscribe(res => {
+    this.http.post(this.listUrl, {opt: 'delete', workspace: {key: key}}).subscribe(res => {
       }
     );
     //新增
-    this.http.post(this.listUrl, {opt:'save',workspace:data}).subscribe(res => {
+    this.http.post(this.listUrl, {opt: 'save', workspace: data}).subscribe(res => {
       if (res) {
         this.message.success('操作成功');
         // this.getWorkSpc();
@@ -251,7 +259,7 @@ export class ListComponent implements OnInit {
         ),
         $(go.Shape, 'Circle',
           {
-            name:"CIRCLE",
+            name: 'CIRCLE',
             alignment: go.Spot.TopRight, alignmentFocus: go.Spot.TopRight,
             width: 20, height: 20, strokeWidth: 0
           },
@@ -365,9 +373,29 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.workSpc = [];
     this.getWorkSpc();
     this.initDiagram();
     this.diagram.commandHandler.increaseZoom(0.5);
   }
 
+  search() {
+    this.loading=true;
+    const data = {
+      opt: 'all',
+      workspace: {}
+    };
+    this.http.post(this.listUrl, data).subscribe(res => {
+      this.workSpc = res;
+      if (this.searchValue) {
+        this.workSpc = this.workSpc.filter(w => {
+          return w.name.indexOf(this.searchValue) >= 0 || w.code.indexOf(this.searchValue) >= 0;
+        });
+      }
+      this.loading=false;
+    }, error1 => {
+      this.message.info(error1);
+      this.loading=false;
+    });
+  }
 }

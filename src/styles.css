@@ -6,3 +6,20 @@
 }
 
 
+.ant-table-tbody tr {
+  font-size: 14px;
+  color: #000000;
+}
+.ant-table-tbody th span {
+  font-size: 14px;
+  color: #000000;
+}
+
+.ant-table-tbody td a {
+  font-size: 14px;
+}
+
+.ant-table-tbody td {
+  font-size: 14px;
+  color: #000000;
+}
