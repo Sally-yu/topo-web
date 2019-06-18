@@ -373,6 +373,7 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading=true;
     this.workSpc = [];
     this.getWorkSpc();
     this.initDiagram();
